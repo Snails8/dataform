@@ -1,4 +1,4 @@
-defaultProject: ows-sandbox
+defaultProject: your-project-id  #書き換えてください
 defaultLocation: asia-northeast1
 defaultDataset: dataform
 defaultAssertionDataset: dataform_assertions
