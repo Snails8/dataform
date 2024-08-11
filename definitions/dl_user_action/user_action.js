@@ -3,8 +3,8 @@ const csvFileName = "sample/user_action.csv";
 
 publish("user_action_jsver", {
   type: "view",
-  schema: "datalake",
-  tags: ["datalake_for_user"],
+  schema: "dl_user_action",
+  tags: ["dl_user_action"],
   description: "user-actionのraw data (JavaScript version)",
 })
   .query(ctx => `

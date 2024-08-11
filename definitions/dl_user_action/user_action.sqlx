@@ -1,8 +1,8 @@
 config {
   type: "operations",
   name: "user_action",
-  schema: "datalake",
-  tags: ["datalake_for_user"],
+  schema: "dl_user_action",
+  tags: ["dl_user_action"],
   hasOutput: true,
 }
 
