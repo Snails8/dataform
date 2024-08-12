@@ -1,0 +1,28 @@
+config {
+  type: "operations",
+  name: "user_action",
+  schema: "dl_user_action",
+  tags: ["dl_user_action"],
+  hasOutput: true,
+}
+
+js {
+  const project = dataform.projectConfig.defaultProject;
+  const csvFileName = "sample/user_action.csv";
+}
+
+CREATE OR REPLACE EXTERNAL TABLE ${self()} (
+  timestamp STRING,
+  user_id STRING,
+  session_id STRING,
+  page_url STRING,
+  event_type STRING,
+  device_type STRING,
+  browser STRING
+)
+OPTIONS (
+  description = "user-actionのraw data",
+  uris = ['gs://${project}-dataform/${csvFileName}'],
+  format = 'CSV',
+  skip_leading_rows = 1
+)
