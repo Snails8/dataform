@@ -1,0 +1,29 @@
+config {
+  type: "table",
+  name: "dwh_user_action",
+  schema: "dwh_user_action",
+  description: "User action data warehouse",
+  columns: {
+    timestamp: "Timestamp of the event",
+    date: "Date of the event",
+    user_id: "Unique identifier for the user",
+    session_id: "Unique identifier for the session",
+    page_url: "URL of the page visited",
+    event_type: "Type of event (pageview, click, scroll, purchase)",
+    device_type: "Type of device used",
+    browser: "Browser used"
+  },
+  tags: ["dwh"]
+}
+
+SELECT
+  TIMESTAMP(timestamp) AS timestamp,
+  DATE(TIMESTAMP(timestamp)) AS date,
+  user_id,
+  session_id,
+  page_url,
+  event_type,
+  device_type,
+  browser
+FROM
+  ${ref("user_action")}

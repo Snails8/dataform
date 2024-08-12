@@ -1,0 +1,46 @@
+config {
+  type: "table",
+  name: "dm_daily_user_activity",
+  schema: "dm_user_activity",
+  description: "Daily summary of user activity",
+  columns: {
+    date: "Date of the activity",
+    total_users: "Total number of unique users",
+    total_sessions: "Total number of unique sessions",
+    total_pageviews: "Total number of pageviews",
+    total_clicks: "Total number of clicks",
+    total_scrolls: "Total number of scrolls",
+    total_purchases: "Total number of purchases",
+    avg_session_duration_minutes: "Average session duration in minutes"
+  },
+  tags: ["dm", "daily"]
+}
+
+SELECT
+  date,
+  COUNT(DISTINCT user_id) AS total_users,
+  COUNT(DISTINCT session_id) AS total_sessions,
+  SUM(CASE WHEN event_type = 'pageview' THEN 1 ELSE 0 END) AS total_pageviews,
+  SUM(CASE WHEN event_type = 'click' THEN 1 ELSE 0 END) AS total_clicks,
+  SUM(CASE WHEN event_type = 'scroll' THEN 1 ELSE 0 END) AS total_scrolls,
+  SUM(CASE WHEN event_type = 'purchase' THEN 1 ELSE 0 END) AS total_purchases,
+  AVG(session_duration_minutes) AS avg_session_duration_minutes
+FROM (
+  SELECT
+    date,
+    user_id,
+    session_id,
+    event_type,
+    TIMESTAMP_DIFF(MAX(timestamp), MIN(timestamp), MINUTE) AS session_duration_minutes
+  FROM
+    ${ref("dwh_user_action")}
+  GROUP BY
+    date,
+    user_id,
+    session_id,
+    event_type
+)
+GROUP BY
+  date
+ORDER BY
+  date
